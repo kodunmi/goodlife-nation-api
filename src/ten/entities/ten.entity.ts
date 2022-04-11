@@ -19,4 +19,18 @@ export class Ten extends BaseEntity {
     })
     @JoinColumn()
     leader: User
+
+    @OneToOne(() => User,{
+        eager: false
+    })
+    @JoinColumn()
+    vp: User
+
+    @OneToOne(() => User,{
+        eager: false
+    })
+    @JoinColumn()
+    vip: User
+
+
 }

@@ -75,15 +75,27 @@ export class User extends BaseEntity {
     @Column({default:false})
     isLeader: boolean
 
+    @Column({default:false})
+    isVip: boolean
+
+    @Column({default:false})
+    isVp: boolean
+
     @ManyToOne(() => RoyalChapter, chapter => chapter.users,{
         eager: true
     })
     chapter: RoyalChapter;
 
+    @Column({nullable:true})
+    chapterId: string;
+
     @ManyToOne(() => Ten, ten => ten.users, {
-        eager: true
+        eager: true,
     })
     ten: Ten;
+
+    @Column({nullable:true})
+    tenId: string;
 
     @OneToMany(type => Convert, convert => convert.user)
     converts: Convert[]

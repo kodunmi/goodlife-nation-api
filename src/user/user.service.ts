@@ -6,6 +6,11 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UserService {
@@ -14,6 +19,9 @@ export class UserService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) { }
+  async paginate(options: IPaginationOptions): Promise<Pagination<User>> {
+    return paginate<User>(this.usersRepository, options);
+  }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     // check if the user exists in the db
@@ -109,7 +117,7 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     // return this.usersRepository.update(id, updateUserDto);
 
     const entity = await this.usersRepository.findOne(id);
@@ -123,13 +131,13 @@ export class UserService {
     return this.usersRepository.delete(id);
   }
 
-  async getOtp(id: number): Promise<number> {
+  async getOtp(id: string): Promise<number> {
     return this.usersRepository.findOne(id).then(user => {
       return user.otp;
     });
   }
 
-  async getPasswordResetCode(id: number): Promise<number> {
+  async getPasswordResetCode(id: string): Promise<number> {
     return this.usersRepository.findOne(id).then(user => {
       return user.forgetPasswordOtp;
     });

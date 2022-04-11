@@ -1,1 +1,3 @@
-export class CreateRoyalChapterDto {}
+export class CreateRoyalChapterDto {
+    
+}

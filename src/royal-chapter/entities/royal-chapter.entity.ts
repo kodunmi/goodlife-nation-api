@@ -38,9 +38,7 @@ export class RoyalChapter extends BaseEntity {
     @OneToMany(type => Ten, ten => ten.chapter)
     tens: Ten[];
 
-    @OneToOne(() => User,{
-        eager:false
-    })
+    @OneToOne(() => User)
     @JoinColumn()
     bishop: User
 }
