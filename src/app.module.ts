@@ -28,12 +28,12 @@ import { ConvertModule } from './convert/convert.module';
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as any,
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
+      type: 'mysql',
+      host: process.env.RDS_HOSTNAME,
+      port: parseInt(process.env.RDS_PORT),
+      username: process.env.RDS_USERNAME,
+      password: process.env.RDS_PASSWORD,
+      database: process.env.RDS_DB_NAME,
       entities: [RoyalChapter, User, Ten, Message, Quote, RpnToday, Convert],
       synchronize: true,
     }),
