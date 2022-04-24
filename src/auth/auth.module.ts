@@ -17,6 +17,7 @@ import { User } from 'src/user/entities/user.entity';
             defaultStrategy: 'jwt',
             property: 'user',
             session: false,
+            
         }),
         JwtModule.register({
             secret: process.env.SECRETKEY, signOptions: {
