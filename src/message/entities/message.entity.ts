@@ -18,6 +18,9 @@ export class Message extends BaseEntity {
     @Column()
     date: Date
 
-    @Column()
-    tag: 'NCR'|'7DOA'|'TGP'|'PEM'
+    @Column({
+        type: 'enum',
+        enum: ['NCR','7DOA','TGP','PEM']
+    })
+    tag: string
 }

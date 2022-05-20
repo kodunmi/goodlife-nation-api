@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
+import { BaseResponse } from 'src/base-response.interface';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('message')
 export class MessageController {
@@ -12,9 +14,31 @@ export class MessageController {
     return this.messageService.create(createMessageDto);
   }
 
-  @Get()
-  findAll() {
-    return this.messageService.findAll();
+  @Get('get-all')
+  async findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number = 2,
+    @Query('search') search: string = undefined,
+    @Query('tag') tag: 'ALL' | 'NCR' | '7DOA' | 'PEM' | 'TGP' = 'ALL'
+
+  ): Promise<BaseResponse<Pagination<any>>> {
+    console.log(tag);
+    
+    return {
+      data: await this.messageService.findAll({
+        search: search ,
+        tag: tag,
+        options:
+         {
+          page,
+          limit
+        }
+      }
+       
+      ),
+      status: 'success',
+    }
+    // return this.messageService.findAll();
   }
 
   @Get(':id')

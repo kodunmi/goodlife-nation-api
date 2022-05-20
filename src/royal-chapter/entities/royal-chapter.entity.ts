@@ -32,6 +32,12 @@ export class RoyalChapter extends BaseEntity {
     @Column()
     email: string;
 
+    @Column({nullable: true})
+    lat: number;
+
+    @Column({nullable: true})
+    lng: number;
+
     @OneToMany(type => User, user => user.chapter)
     users: User[];
 
