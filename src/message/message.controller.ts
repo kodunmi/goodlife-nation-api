@@ -4,6 +4,7 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { BaseResponse } from 'src/base-response.interface';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { Message } from './entities/message.entity';
 
 @Controller('message')
 export class MessageController {
@@ -17,7 +18,7 @@ export class MessageController {
   @Get('get-all')
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
-    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number = 2,
+    @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number = 15,
     @Query('search') search: string = undefined,
     @Query('tag') tag: 'ALL' | 'NCR' | '7DOA' | 'PEM' | 'TGP' = 'ALL'
 
@@ -42,8 +43,11 @@ export class MessageController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.messageService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<BaseResponse<Message>> {
+    return {
+      data: await this.messageService.findOne(id),
+      status: 'success',
+    }
   }
 
   @Patch(':id')

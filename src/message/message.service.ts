@@ -17,14 +17,19 @@ export class MessageService {
   }
 
   findAll({options, search, tag}:{ options: IPaginationOptions, search: string, tag: 'ALL' | 'NCR' | '7DOA' | 'PEM' | 'TGP'}):Promise<Pagination<Message>>{
-    return paginate<Message>(this.messageRepository, options,{
-      where: { 
-        tag: tag == 'ALL' ? '7DOA' && 'NCR' && 'PEM'&& 'TGP' : tag,  
-      }
-    });
+    if(tag === 'ALL'){
+      return paginate<Message>(this.messageRepository, options);
+    }else{
+      return paginate<Message>(this.messageRepository, options,{
+        where: { 
+          tag: tag
+        }
+      });
+    }
+   
   }
 
-  findOne(id: number): Promise<Message> {
+  findOne(id: string): Promise<Message> {
     return this.messageRepository.findOne(id);
   }
 
